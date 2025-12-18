@@ -1,0 +1,4 @@
+body { font-family: 'Poppins', sans-serif; background: #f5f8fb; color:#25314a; }
+.sidebar { background:#6f86d6; color:white; min-height:100vh; }
+.card-soft { background: white; border-radius:10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+.btn-blue { background:#6f86d6; color:white; border:none; }

@@ -1,0 +1,19 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: serverbuku
+  datasource:
+    url: jdbc:mysql://localhost:3306/server_buku
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+# konfigurasi custom kamu taruh di luar 'server' & 'spring'
+api:
+  buku: http://localhost:9000/api/buku
+  peminjaman: http://localhost:9000/api/peminjaman

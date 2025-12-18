@@ -1,0 +1,18 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: perpus-online
+  datasource:
+    url: jdbc:mysql://localhost:3306/server_buku
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+api:
+  buku: http://localhost:9000/api/buku
+  peminjaman: http://localhost:9000/api/peminjaman

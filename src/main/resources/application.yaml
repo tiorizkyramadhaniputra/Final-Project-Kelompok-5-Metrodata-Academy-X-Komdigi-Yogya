@@ -1,0 +1,32 @@
+server:
+<<<<<<< HEAD
+  port: 9000
+
+spring:
+  application:
+    name: serverbuku
+=======
+  port: 9001
+
+spring:
+  application:
+    name: perpus-online
+>>>>>>> 906a2d8 (pesan commit kamu, misal: update controller dan view admin)
+  datasource:
+    url: jdbc:mysql://localhost:3306/server_buku
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+<<<<<<< HEAD
+# konfigurasi custom kamu taruh di luar 'server' & 'spring'
+api:
+  buku: http://localhost:9000/api/buku
+=======
+api:
+  buku: http://localhost:9000/api/buku
+  peminjaman: http://localhost:9000/api/peminjaman
+>>>>>>> 906a2d8 (pesan commit kamu, misal: update controller dan view admin)

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>📚 Katalog Buku</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* 🌈 Background lembut + pattern tekstur */
+    body {
+      background: linear-gradient(135deg, #e8edff, #f9fbff);
+      background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+      background-size: cover;
+      font-family: 'Poppins', sans-serif;
+      color: #25314a;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    /* 🌙 Dark mode */
+    body.dark {
+      background: linear-gradient(135deg, #1a1f3a, #2d3561);
+      color: #f1f3fa;
+    }
+
+    /* 🧭 Navbar elegan */
+    nav {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      transition: background 0.5s ease;
+    }
+
+    body.dark nav {
+      background: rgba(30, 35, 60, 0.85);
+    }
+
+    .theme-toggle {
+      border: none;
+      background: transparent;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* 🏷️ Judul */
+    h2 {
+      font-weight: 700;
+      color: #1f2b59;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    body.dark h2 {
+      color: #f1f3fa;
+    }
+
+    h2 img {
+      width: 58px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background-color: rgba(255,255,255,0.8);
+      padding: 6px;
+      transition: transform 0.3s ease;
+    }
+
+    h2 img:hover {
+      transform: rotate(-10deg) scale(1.05);
+    }
+
+    /* ✨ Card Buku (efek 3D lembut) */
+    .book-card {
+      border: none;
+      border-radius: 18px;
+      transition: all 0.35s ease;
+      overflow: hidden;
+      background: linear-gradient(145deg, #ffffff, #f2f4ff);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      transform: perspective(1000px) translateZ(0) scale(1);
+      cursor: pointer;
+    }
+
+    body.dark .book-card {
+      background: linear-gradient(145deg, #2b3160, #23284a);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    }
+
+    .book-card:hover {
+      transform: perspective(1000px) translateZ(25px) scale(1.08) translateY(-8px) rotateX(3deg);
+      box-shadow: 0 18px 40px rgba(111, 134, 214, 0.35);
+      z-index: 20;
+    }
+
+    .book-title {
+      font-weight: 600;
+      color: #1c2448;
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    body.dark .book-title {
+      color: #e1e6ff;
+    }
+
+    .book-title::before {
+      content: "📘";
+      font-size: 1.2rem;
+    }
+
+    /* 🔵 Tombol Pinjam */
+    .btn-pinjam {
+      background: linear-gradient(90deg, #738aff, #8ca0ff);
+      border: none;
+      color: white;
+      border-radius: 8px;
+      transition: all 0.25s;
+      font-weight: 500;
+    }
+
+    .btn-pinjam:hover {
+      background: linear-gradient(90deg, #637aff, #7d97ff);
+      box-shadow: 0 4px 12px rgba(99, 122, 255, 0.4);
+    }
+
+    .card-stok-habis {
+      opacity: 0.6;
+      filter: grayscale(40%);
+    }
+
+    /* 📚 Footer */
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      color: #6c757d;
+      font-size: 0.95rem;
+    }
+
+    body.dark footer {
+      color: #c9c9d6;
+    }
+
+    /* 🌙 DARK MODE untuk Modal Konfirmasi */
+    body.dark .modal-content {
+      background-color: #242942 !important;
+      color: #f1f3fa !important;
+      border: 1px solid #3f4670 !important;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.6) !important;
+      transition: all 0.3s ease-in-out;
+    }
+
+    body.dark .modal-header {
+      background-color: #343a6b !important;
+      color: #ffffff !important;
+      border-bottom: 1px solid #4c5386 !important;
+    }
+
+    body.dark .modal-title {
+      color: #ffffff !important;
+      font-weight: 600;
+    }
+
+    body.dark .modal-body label,
+    body.dark .modal-body p,
+    body.dark .modal-body span {
+      color: #e0e3ff !important;
+    }
+
+    body.dark .form-control {
+      background-color: #1f2440 !important;
+      color: #f1f3fa !important;
+      border: 1px solid #4c5386 !important;
+    }
+
+    body.dark .form-control::placeholder {
+      color: #a6aad9 !important;
+    }
+
+    body.dark .btn-outline-secondary {
+      border-color: #a6aad9 !important;
+      color: #a6aad9 !important;
+    }
+
+    body.dark .btn-outline-secondary:hover {
+      background-color: #a6aad9 !important;
+      color: #1f2440 !important;
+    }
+
+    body.dark .btn-primary {
+      background: linear-gradient(90deg, #738aff, #8ca0ff) !important;
+      border: none !important;
+      color: #fff !important;
+    }
+
+    body.dark .btn-primary:hover {
+      background: linear-gradient(90deg, #637aff, #7d97ff) !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🌐 Navbar -->
+  <nav class="navbar navbar-light sticky-top py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+      <span class="navbar-brand fw-semibold text-primary">📚 Perpustakaan Online</span>
+      <button id="toggleTheme" class="theme-toggle">🌙</button>
+    </div>
+  </nav>
+
+  <!-- 📖 Konten Buku -->
+  <div class="container py-5 mt-4">
+    <h2>
+      <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" alt="Ikon Buku">
+      Daftar Buku
+    </h2>
+
+    <div class="row g-4" id="daftarBuku"></div>
+
+    <footer class="mt-5">
+      <p>Perpustakaan Online © 2025 | Dibuat dengan 💙 oleh Kelompok 5</p>
+    </footer>
+  </div>
+
+  <!-- 🪄 Modal Konfirmasi Pinjam -->
+  <div class="modal fade" id="modalPinjam" tabindex="-1" aria-labelledby="modalPinjamLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content rounded-4 shadow-sm">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="modalPinjamLabel">Konfirmasi Peminjaman</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p id="judulBuku" class="fw-semibold"></p>
+          <div class="mb-3">
+            <label class="form-label">Nama Peminjam</label>
+            <input type="text" id="namaPeminjam" class="form-control" placeholder="Masukkan nama kamu">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" id="btnKonfirmasiPinjam">Pinjam</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📜 Script -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  let selectedBookId = null;
+  const API_BASE_URL = "http://localhost:9001/api";
+
+  async function loadBuku() {
+      const res = await fetch(API_BASE_URL + "/katalog/buku");
+      const container = document.getElementById("daftarBuku");
+
+      if (!res.ok) {
+          container.innerHTML = `<p class="text-danger text-center">Gagal memuat daftar buku dari API.</p>`;
+          return;
+      }
+
+      const data = await res.json();
+      container.innerHTML = "";
+
+      data.forEach(buku => {
+          const isStokHabis = buku.stok <= 0;
+          const cardClass = isStokHabis ? "book-card card-stok-habis" : "book-card";
+
+          container.innerHTML += `
+              <div class="col-md-4 col-sm-6">
+                <div class="${cardClass} p-4 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <h5 class="book-title mb-2">${buku.judul}</h5>
+                    <p class="mb-1"><b>Penulis:</b> ${buku.penulis}</p>
+                    <p class="mb-1"><b>Kategori:</b> ${buku.kategori}</p>
+                    <p class="mb-3"><b>Stok:</b> ${buku.stok}</p>
+                  </div>
+                  <button class="btn btn-pinjam mt-auto"
+                          onclick="bukaModal(${buku.id}, '${buku.judul}')"
+                          ${isStokHabis ? 'disabled' : ''}>
+                      ${isStokHabis ? 'Stok Habis' : 'Pinjam Buku'}
+                  </button>
+                </div>
+              </div>
+          `;
+      });
+  }
+
+  function bukaModal(id, judul) {
+      selectedBookId = id;
+      document.getElementById("judulBuku").innerText = "Buku: " + judul;
+      document.getElementById("namaPeminjam").value = "";
+      new bootstrap.Modal(document.getElementById("modalPinjam")).show();
+  }
+
+  document.getElementById("btnKonfirmasiPinjam").addEventListener("click", async () => {
+      const nama = document.getElementById("namaPeminjam").value;
+      if (!nama) {
+          alert("Nama peminjam harus diisi!");
+          return;
+      }
+
+      const peminjamanData = {
+          namaPeminjam: nama,
+          bukuId: selectedBookId
+      };
+
+      try {
+          const response = await fetch(API_BASE_URL + "/peminjaman/save", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(peminjamanData)
+          });
+
+          if (response.ok) {
+              alert("✅ Peminjaman berhasil dicatat!");
+              bootstrap.Modal.getInstance(document.getElementById("modalPinjam")).hide();
+              loadBuku();
+          } else {
+              const err = await response.json();
+              alert("❌ Gagal: " + (err.message || "Stok habis atau kesalahan lainnya."));
+          }
+      } catch (error) {
+          alert("Terjadi kesalahan koneksi server.");
+      }
+  });
+
+  // 🌙 Dark Mode Toggle
+  const toggleBtn = document.getElementById('toggleTheme');
+  toggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    toggleBtn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  });
+
+  loadBuku();
+  </script>
+</body>
+</html>
