@@ -58,7 +58,7 @@ Secara keseluruhan, eLibro selaras dengan prinsip **keberlanjutan modern** —
 - **Fatmawati Muhammad Nassrudin**
 - **Farhan Maulana**
 - **Fadhalfin Mars Agi Putra**
-- **Tio Risky Ramadhani Putra**
+- **Tio Rizky Ramadhani Putra**
 - **Taufiq Kurniawan Akbar**
 
 ---
